@@ -1,14 +1,11 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
+using UnityEngine;
 
 public enum Direction
 { 
-    Left, Right
-}
-
-public enum MoveState
-{
-    Move, Stop
+    Left, Right, Up, Down
 }
 
 // A piece of Population
@@ -36,7 +33,7 @@ public class Chromosome
         float dominantRate;
         dominantRate = (dominent.fitness - recessive.fitness) / maxFitness * 50f + 50f;
 
-        Random random = new Random();
+        System.Random random = new System.Random();
         if (random.Next(0, 100) < dominantRate)
         {
             return dominent;
@@ -48,7 +45,6 @@ public class Chromosome
     }
 
     private Direction _direction;
-    private MoveState _moveState;
 
     public float fitness = 0;
     
@@ -63,22 +59,10 @@ public class Chromosome
             _direction = value;
         }
     }
-    public MoveState moveState
-    {
-        get
-        {
-            return _moveState;
-        }
-        set
-        {
-            _moveState = value;
-        }
-    }
 
     public void Randomize()
     {
         Randomize(ref _direction);
-        Randomize(ref _moveState);
     }
 
     private void Randomize<T>(ref T type) where T : Enum
@@ -87,10 +71,8 @@ public class Chromosome
                                     .Cast<T>()
                                     .ToArray();
 
-        int randomIndex = new Random().Next(typeArrays.Length);
+        int randomIndex = new System.Random().Next(typeArrays.Length);
 
         type = typeArrays[randomIndex];
     }
-
-    
 }

@@ -5,8 +5,8 @@ using UnityEngine;
 public static class GeneManager
 {
     private static int _passScale = 10;
-    private static int _size = 100;
-    private static float _time = 10;
+    private static int _size = 51;
+    private static float _time = 5;
     private static float _speed = 1;
 
     public static float speed
@@ -20,7 +20,6 @@ public static class GeneManager
             _speed = value;
         }
     }
-
     public static int passScale
     {
         get
@@ -32,7 +31,6 @@ public static class GeneManager
             _passScale = value;
         }
     }
-
     public static int size
     {
         get
@@ -40,7 +38,6 @@ public static class GeneManager
             return _size;
         }
     }
-
     public static float time
     {
         get
@@ -51,8 +48,6 @@ public static class GeneManager
         {
             _time = (float)Math.Floor(value);
             _size = (int)_time * 10;
-            Debug.Log(_time);
-            Debug.Log(_size);
         }
     }
 }

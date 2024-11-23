@@ -66,10 +66,8 @@ public class InputManager : MonoBehaviour
 
         UpdateInformation();
     }
-
     public void UpdateInformation()
     {
-        Debug.Log("Update");
         information.text = "";
         information.text += "Passed Genes : " + GeneManager.passScale + "\n";
         information.text += "Test Genes : " + (GeneManager.passScale * (GeneManager.passScale - 1)) / 2 + "\n";
