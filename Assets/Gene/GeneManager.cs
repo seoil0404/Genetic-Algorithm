@@ -4,10 +4,10 @@ using UnityEngine;
 
 public static class GeneManager
 {
-    private static int _passScale = 10;
+    private static int _passScale = 15;
     private static int _size = 51;
     private static float _time = 5;
-    private static float _speed = 1;
+    private static float _speed = 3;
 
     public static float speed
     {
@@ -47,7 +47,7 @@ public static class GeneManager
         set
         {
             _time = (float)Math.Floor(value);
-            _size = (int)_time * 10;
+            _size = (int)_time * 10 + 1;
         }
     }
 }

@@ -29,9 +29,9 @@ public class Gene : MonoBehaviour
         {
             if(!isEliminated)
             {
+                UpdateFitness();
                 _chromosome = value;
                 UpdateBehavior();
-                UpdateFitness();
             }
         }
     }
@@ -67,8 +67,11 @@ public class Gene : MonoBehaviour
     {
         currentPosition = gameObject.transform.position;
 
-        //_chromosome.fitness += Vector3.Distance(pastPosition, currentPosition);
-        _chromosome.fitness += Vector3.Distance(pastPosition, _endPosition) - Vector3.Distance(currentPosition, _endPosition);
+        if (_chromosome != null)
+        {
+            _chromosome.fitness += Vector3.Distance(pastPosition, currentPosition);
+            _chromosome.fitness = Vector3.Distance(pastPosition, _endPosition) - Vector3.Distance(currentPosition, _endPosition);
+        }
 
         pastPosition = currentPosition;
     }
@@ -77,6 +80,7 @@ public class Gene : MonoBehaviour
     {
         isEliminated = true;
         _rigidbody.linearVelocity = Vector2.zero;
+        _chromosome.fitness -= 10;
         gameObject.SetActive(false);
     }
 }

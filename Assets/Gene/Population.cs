@@ -17,7 +17,6 @@ public class Population
     {
         foreach(Chromosome index in chromosomeData)
         {
-            Debug.Log("Randomize");
             index.Randomize();
         }
     }
@@ -59,7 +58,6 @@ public class Population
     {
         get
         {
-            Debug.Log(index);
             return chromosomeData[index];
         }
     }

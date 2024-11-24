@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ public class GeneController : MonoBehaviour
 
     private int populationSize;
     private Gene[] genes;
+
+    [SerializeField] private TextMeshProUGUI geneInfo;
 
     private void Start()
     {
@@ -39,6 +42,9 @@ public class GeneController : MonoBehaviour
     {
         SelectFittest(genes);
         Crossover(genes);
+
+        // to debug
+        PrintGeneInfo(genes, geneInfo);
 
         timeRate = 0;
         chromosomeRate = 0;
@@ -114,6 +120,38 @@ public class GeneController : MonoBehaviour
                     target[index + 1] = temp;
                 }
             }
+        }
+        foreach(Gene item in target)
+        {
+            Debug.Log(item.population.fitness);
+        }
+    }
+
+    // To Debug
+    private void PrintGeneInfo(Gene[] target, TextMeshProUGUI infoTarget)
+    {
+        infoTarget.text = "";
+        foreach(Gene item in target)
+        {
+            for (int index = 0; index < GeneManager.size; index++)
+            {
+                switch (item.population[index].direction)
+                {
+                    case Direction.Up:
+                        infoTarget.text += "N";
+                        break;
+                    case Direction.Down:
+                        infoTarget.text += "S";
+                        break;
+                    case Direction.Right:
+                        infoTarget.text += "E";
+                        break;
+                    case Direction.Left:
+                        infoTarget.text += "W";
+                        break;
+                }
+            }
+            infoTarget.text += "\n";
         }
     }
 }
