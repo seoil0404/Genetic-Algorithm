@@ -13,38 +13,43 @@ public class Chromosome
 {
     public static Chromosome CrossOver(in Chromosome chromosome1, in Chromosome chromosome2)
     {
-        Chromosome dominent = new Chromosome();
-        Chromosome recessive = new Chromosome();
+        Chromosome dominent;
+        Chromosome recessive;
+
+        Chromosome newChromosome = new Chromosome();
 
         if (chromosome1.fitness > chromosome2.fitness)
         {
-            dominent.direction = chromosome1.direction;
-            recessive.direction = chromosome2.direction;
+            dominent = chromosome1;
+            recessive= chromosome2;
         }
         else
         {
-            dominent.direction = chromosome2.direction;
-            recessive.direction = chromosome1.direction;
+            dominent = chromosome2;
+            recessive = chromosome1;
         }
 
         float dominantRate;
-        dominantRate = (dominent.fitness - recessive.fitness) / GeneManager.speed * 20 * 50f + 50f;
+        dominantRate = (dominent.fitness - recessive.fitness) / GeneManager.speed * GeneManager.time * 7.5f + 50f;
 
-        System.Random random = new System.Random();
-        if(random.Next(0, 100) < 1)
+        dominent.fitness = 0;
+        recessive.fitness = 0;
+
+
+        if(GeneManager.random.Next(0, 100) < 1)
         {
-            Chromosome mutation = new Chromosome();
-            mutation.Randomize();
-            return mutation;
+            newChromosome.Randomize();
+            return newChromosome;
         }
-        else if (random.Next(0, 100) < dominantRate)
+        else if (GeneManager.random.Next(0, 100) < dominantRate)
         {
-            return dominent;
+            newChromosome.direction = dominent.direction;
         }
         else
         {
-            return recessive;
+            newChromosome.direction = recessive.direction;
         }
+        return newChromosome;
     }
 
     private Direction _direction;
@@ -86,7 +91,7 @@ public class Chromosome
                                     .Cast<T>()
                                     .ToArray();
 
-        int randomIndex = new System.Random().Next(typeArrays.Length);
+        int randomIndex = GeneManager.random.Next(typeArrays.Length);
 
         type = typeArrays[randomIndex];
     }

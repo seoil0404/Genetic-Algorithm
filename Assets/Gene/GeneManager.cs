@@ -4,10 +4,12 @@ using UnityEngine;
 
 public static class GeneManager
 {
-    private static int _passScale = 15;
-    private static int _size = 51;
-    private static float _time = 5;
-    private static float _speed = 3;
+    public static System.Random random = new System.Random();
+    private static int _passScale = 20;
+    private static int _size = 81;
+    private static float _time = 8;
+    private static float _speed = 7;
+    private static GeneController _controller;
 
     public static float speed
     {
@@ -48,6 +50,17 @@ public static class GeneManager
         {
             _time = (float)Math.Floor(value);
             _size = (int)_time * 10 + 1;
+        }
+    }
+    public static GeneController controller
+    {
+        get
+        {
+            return _controller;
+        }
+        set
+        {
+            _controller = value;
         }
     }
 }

@@ -12,9 +12,7 @@ public class Gene : MonoBehaviour
 
     private Vector3 _endPosition;
 
-    private float direction = 0;
-
-    private bool isEliminated = false;
+    private int enterStack = 0;
 
     private void Start()
     {
@@ -27,7 +25,7 @@ public class Gene : MonoBehaviour
     {
         set
         {
-            if(!isEliminated)
+            if(enterStack > 0)
             {
                 UpdateFitness();
                 _chromosome = value;
@@ -69,18 +67,33 @@ public class Gene : MonoBehaviour
 
         if (_chromosome != null)
         {
-            _chromosome.fitness += Vector3.Distance(pastPosition, currentPosition);
-            _chromosome.fitness = Vector3.Distance(pastPosition, _endPosition) - Vector3.Distance(currentPosition, _endPosition);
+            _chromosome.fitness += Vector3.Distance(pastPosition, _endPosition) - Vector3.Distance(currentPosition, _endPosition);
         }
-
+        
         pastPosition = currentPosition;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        enterStack++;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        isEliminated = true;
+        enterStack--;
+        if (enterStack == 0)
+        {
+            Out();
+        }
+    }
+
+    private void Out()
+    {
+        for(int index = 0; index < GeneManager.size; index++)
+        {
+            population[index].fitness -= GeneManager.speed * 0.1f;
+        }
         _rigidbody.linearVelocity = Vector2.zero;
-        _chromosome.fitness -= 10;
         gameObject.SetActive(false);
     }
 }

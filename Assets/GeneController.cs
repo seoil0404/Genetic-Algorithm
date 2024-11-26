@@ -18,6 +18,7 @@ public class GeneController : MonoBehaviour
 
     private void Start()
     {
+        GeneManager.controller = this;
         populationSize = (GeneManager.passScale * (GeneManager.passScale - 1))/2;
         genes = new Gene[populationSize];
 
@@ -121,10 +122,6 @@ public class GeneController : MonoBehaviour
                 }
             }
         }
-        foreach(Gene item in target)
-        {
-            Debug.Log(item.population.fitness);
-        }
     }
 
     // To Debug
@@ -154,4 +151,6 @@ public class GeneController : MonoBehaviour
             infoTarget.text += "\n";
         }
     }
+
+
 }
