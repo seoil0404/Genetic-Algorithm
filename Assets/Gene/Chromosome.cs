@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum Direction
 { 
-    Left, Right, Up, Down
+    Left, Right, Up, Down, Stop
 }
 
 // A piece of Population
@@ -36,7 +36,7 @@ public class Chromosome
         recessive.fitness = 0;
 
 
-        if(GeneManager.random.Next(0, 100) < 1)
+        if(GeneManager.random.Next(0, 100) < GeneManager.mutationRate)
         {
             newChromosome.Randomize();
             return newChromosome;
@@ -55,6 +55,16 @@ public class Chromosome
     private Direction _direction;
 
     private float _fitness = 0;
+
+    public Chromosome Clone()
+    {
+        Chromosome clone = new Chromosome();
+        
+        clone._direction = _direction;
+        clone._fitness = _fitness;
+        
+        return clone;
+    }
 
     public float fitness
     {

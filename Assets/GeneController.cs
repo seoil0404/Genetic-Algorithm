@@ -16,9 +16,18 @@ public class GeneController : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI geneInfo;
 
-    private void Start()
+    private void Awake()
     {
         GeneManager.controller = this;
+    }
+
+    public void StartEvolve()
+    {
+        if (genes != null && genes.Length != 0)
+        {
+            foreach (var gene in genes) Destroy(gene.gameObject);
+        }
+
         populationSize = (GeneManager.passScale * (GeneManager.passScale - 1))/2;
         genes = new Gene[populationSize];
 
@@ -33,39 +42,39 @@ public class GeneController : MonoBehaviour
             genes[index].population.Randomize();
         }
 
-        ProcessPopulation();
+        ProcessPopulation(genes);
     }
 
     private float timeRate;
     private int chromosomeRate;
 
-    private void ProcessPopulation()
+    private void ProcessPopulation(Gene[] target)
     {
-        SelectFittest(genes);
-        Crossover(genes);
-
-        // to debug
-        PrintGeneInfo(genes, geneInfo);
+        SelectFittest(target);
+        Crossover(target);
 
         timeRate = 0;
         chromosomeRate = 0;
-        StartCoroutine(ProcessChromosome());
+        StartCoroutine(ProcessChromosome(target));
+
+        // to debug
+        PrintGeneInfo(target, geneInfo);
     }
     
-    IEnumerator ProcessChromosome()
+    IEnumerator ProcessChromosome(Gene[] target)
     {
         yield return new WaitForSeconds(0.1f);
 
-        foreach(Gene gene in genes)
+        foreach(Gene gene in target)
         {
-            if(gene != null) gene.chromosome = gene.population[chromosomeRate];
+            if(gene != null) gene.chromosome = gene.population.chromosomes[chromosomeRate];
         }
 
         timeRate += 0.1f;
         chromosomeRate++;
         
-        if (timeRate < GeneManager.time) StartCoroutine(ProcessChromosome());
-        else ProcessPopulation();
+        if (timeRate < GeneManager.time) StartCoroutine(ProcessChromosome(target));
+        else ProcessPopulation(target);
     }
 
     private void SelectFittest(Gene[] target)
@@ -79,35 +88,29 @@ public class GeneController : MonoBehaviour
     }
     private void Crossover(Gene[] target)
     {
-        Gene[] passGene = new Gene[GeneManager.passScale];
+        Population[] passPopulation = new Population[GeneManager.passScale];
 
-        for (int index = 0; index < passGene.Length; index++)
+        for (int index = 0; index < passPopulation.Length; index++)
         {
-            passGene[index] = genes[index];
+            passPopulation[index] = target[index].population.Clone();
         }
 
-        for(int index = 0; index < genes.Length; index++)
+        for(int index = 0; index < target.Length; index++)
         {
-            Destroy(genes[index].gameObject);
-
-            genes[index] = Instantiate(genePrefab).GetComponent<Gene>();
-
-            genes[index].transform.position = startPoint.transform.position;
-            genes[index].endPosition = endPoint.transform.position;
-
-            genes[index].population = new Population();
+            target[index].Initialize();
         }
 
         int count = 0;
-        for (int first = 0; first < passGene.Length; first++)
+        for (int first = 0; first < passPopulation.Length; first++)
         {
-            for (int second = first + 1; second < passGene.Length; second++)
+            for (int second = first + 1; second < passPopulation.Length; second++)
             {
-                target[count].population = Population.Crossover(passGene[first].population, passGene[second].population);
+                target[count].population = Population.Crossover(passPopulation[first], passPopulation[second]);
                 count++;
             }
         }
     }
+
     private void Sort(Gene[] target)
     {
         foreach(Gene item in target)
@@ -132,23 +135,28 @@ public class GeneController : MonoBehaviour
         {
             for (int index = 0; index < GeneManager.size; index++)
             {
-                switch (item.population[index].direction)
+                if (item.population.chromosomes[index] == null) Debug.LogError("The Chromosome didn't allocated");
+                switch (item.population.chromosomes[index].direction)
                 {
                     case Direction.Up:
-                        infoTarget.text += "N";
+                        infoTarget.text += "Up, ";
                         break;
                     case Direction.Down:
-                        infoTarget.text += "S";
+                        infoTarget.text += "Down, ";
                         break;
                     case Direction.Right:
-                        infoTarget.text += "E";
+                        infoTarget.text += "Right, ";
                         break;
                     case Direction.Left:
-                        infoTarget.text += "W";
+                        infoTarget.text += "Left, ";
                         break;
+                    case Direction.Stop:
+                        infoTarget.text += "Stop, ";
+                        break;
+                        
                 }
             }
-            infoTarget.text += "\n";
+            infoTarget.text += "\n\n";
         }
     }
 

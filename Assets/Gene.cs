@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,9 +15,28 @@ public class Gene : MonoBehaviour
 
     private int enterStack = 0;
 
-    private void Start()
+    private bool isEnd = false;
+
+    public void Initialize()
+    {
+        transform.position = GeneManager.controller.startPoint.transform.position;
+        
+        pastPosition = gameObject.transform.position;
+        currentPosition = gameObject.transform.position;
+
+        _endPosition = GeneManager.controller.endPoint.transform.position;
+        
+        _rigidbody.linearVelocity = Vector2.zero;
+
+        gameObject.SetActive(true);
+    }
+
+    private void Awake()
     {
         _rigidbody = gameObject.GetComponent<Rigidbody2D>();
+
+        _endPosition = GeneManager.controller.endPoint.transform.position;
+
         pastPosition = gameObject.transform.position;
         currentPosition = gameObject.transform.position;
     }
@@ -27,6 +47,7 @@ public class Gene : MonoBehaviour
         {
             if(enterStack > 0)
             {
+                
                 UpdateFitness();
                 _chromosome = value;
                 UpdateBehavior();
@@ -43,6 +64,7 @@ public class Gene : MonoBehaviour
 
     private void UpdateBehavior()
     {
+        if (_chromosome == null) Debug.LogError("The Chromosome didn't allocated");
 
         switch (_chromosome.direction)
         {
@@ -57,6 +79,9 @@ public class Gene : MonoBehaviour
                 break;
             case Direction.Up:
                 _rigidbody.linearVelocity = Vector2.up * GeneManager.speed;
+                break;
+            case Direction.Stop:
+                _rigidbody.linearVelocity = Vector2.zero;
                 break;
         }
     }
@@ -83,7 +108,12 @@ public class Gene : MonoBehaviour
         enterStack--;
         if (enterStack == 0)
         {
-            Out();
+            if(!isEnd)
+            {
+                
+                Out();
+            }
+            else enterStack++;
         }
     }
 
@@ -91,7 +121,7 @@ public class Gene : MonoBehaviour
     {
         for(int index = 0; index < GeneManager.size; index++)
         {
-            population[index].fitness -= GeneManager.speed * 0.1f;
+            population.chromosomes[index].fitness -= GeneManager.speed * 0.1f;
         }
         _rigidbody.linearVelocity = Vector2.zero;
         gameObject.SetActive(false);

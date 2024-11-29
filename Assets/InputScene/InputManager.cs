@@ -12,6 +12,8 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private TMP_InputField speedInputField;
 
+    [SerializeField] private TMP_InputField mutationInputField;
+
     [SerializeField] private TextMeshProUGUI information;
 
     private void Start()
@@ -66,6 +68,21 @@ public class InputManager : MonoBehaviour
 
         UpdateInformation();
     }
+    public void UpdateMutation()
+    {
+        float result;
+        if (float.TryParse(mutationInputField.text, out result) && result <= 100)
+        {
+            GeneManager.mutationRate = result;
+            mutationInputField.image.color = Color.green;
+        }
+        else
+        {
+            mutationInputField.image.color = Color.red;
+        }
+
+        UpdateInformation();
+    }
     public void UpdateInformation()
     {
         information.text = "";
@@ -74,5 +91,6 @@ public class InputManager : MonoBehaviour
         information.text += "Gene Size : " + GeneManager.size.ToString() + "\n";
         information.text += "Time Scale : " + GeneManager.time.ToString() + "\n";
         information.text += "Gene Speed : " + GeneManager.speed + "\n";
+        information.text += "Mutation Rate : " + GeneManager.mutationRate + "\n";
     }
 }

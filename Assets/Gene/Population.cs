@@ -1,12 +1,28 @@
 using System.Collections.Generic;
 using System.Numerics;
 using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Population
 {
     private List<Chromosome> chromosomeData;
     private float _fitness = 0;
+
+    public Population Clone()
+    {
+        Population clone = new Population();
+
+        clone.chromosomeData.Clear();
+        foreach(Chromosome chromosome in chromosomeData)
+        {
+            clone.chromosomeData.Add(chromosome.Clone());
+        }
+        
+        clone._fitness = _fitness;
+
+        return clone;
+    }
 
     public float fitness
     {
@@ -54,11 +70,12 @@ public class Population
         }
     }
 
-    public Chromosome this[int index]
+    public List<Chromosome> chromosomes
     {
         get
         {
-            return chromosomeData[index];
+            return chromosomeData;
         }
     }
+
 }
