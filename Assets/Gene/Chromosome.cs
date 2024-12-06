@@ -11,6 +11,8 @@ public enum Direction
 // A piece of Population
 public class Chromosome
 {
+    private Direction _direction;
+    private float _fitness = 0;
     public static Chromosome CrossOver(in Chromosome chromosome1, in Chromosome chromosome2)
     {
         Chromosome dominent;
@@ -30,13 +32,13 @@ public class Chromosome
         }
 
         float dominantRate;
-        dominantRate = (dominent.fitness - recessive.fitness) / GeneManager.speed * GeneManager.time * 7.5f + 50f;
+        dominantRate = (dominent.fitness - recessive.fitness) / GeneManager.Speed * GeneManager.Time * 7.5f + 50f;
 
         dominent.fitness = 0;
         recessive.fitness = 0;
 
 
-        if(GeneManager.random.Next(0, 100) < GeneManager.mutationRate)
+        if(GeneManager.random.Next(0, 100) < GeneManager.MutationRate)
         {
             newChromosome.Randomize();
             return newChromosome;
@@ -51,11 +53,6 @@ public class Chromosome
         }
         return newChromosome;
     }
-
-    private Direction _direction;
-
-    private float _fitness = 0;
-
     public Chromosome Clone()
     {
         Chromosome clone = new Chromosome();
@@ -65,7 +62,6 @@ public class Chromosome
         
         return clone;
     }
-
     public float fitness
     {
         get
@@ -77,7 +73,6 @@ public class Chromosome
             _fitness = value;
         }
     }
-
     public Direction direction
     {
         get
@@ -89,12 +84,10 @@ public class Chromosome
             _direction = value;
         }
     }
-
     public void Randomize()
     {
         Randomize(ref _direction);
     }
-
     private void Randomize<T>(ref T type) where T : Enum
     {
         T[] typeArrays = Enum.GetValues(typeof(T))

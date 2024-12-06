@@ -12,13 +12,12 @@ public static class GeneManager
     private static float _mutationRate = 1;
     private static GeneController _controller;
 
-    public static float mutationRate
+    public static float MutationRate
     {
         get { return _mutationRate; }
         set { _mutationRate = value; }
     }
-
-    public static float speed
+    public static float Speed
     {
         get
         {
@@ -29,7 +28,7 @@ public static class GeneManager
             _speed = value;
         }
     }
-    public static int passScale
+    public static int PassScale
     {
         get
         {
@@ -40,14 +39,14 @@ public static class GeneManager
             _passScale = value;
         }
     }
-    public static int size
+    public static int Size
     {
         get
         {
             return _size;
         }
     }
-    public static float time
+    public static float Time
     {
         get
         {
@@ -59,7 +58,7 @@ public static class GeneManager
             _size = (int)_time * 10 + 1;
         }
     }
-    public static GeneController controller
+    public static GeneController Controller
     {
         get
         {

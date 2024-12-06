@@ -25,7 +25,7 @@ public class InputManager : MonoBehaviour
         int result;
         if (int.TryParse(testGeneNumberInputField.text, out result))
         {
-            GeneManager.passScale = result;
+            GeneManager.PassScale = result;
             result = result * (result - 1) / 2;
             testGeneNumberText.text = "Test Gene Number : " + result.ToString();
             testGeneNumberInputField.image.color = Color.green;
@@ -42,8 +42,8 @@ public class InputManager : MonoBehaviour
         float result;
         if (float.TryParse(timeInputField.text, out result))
         {
-            GeneManager.time = result;
-            geneSizeText.text = "Gene Size : " + GeneManager.size.ToString();
+            GeneManager.Time = result;
+            geneSizeText.text = "Gene Size : " + GeneManager.Size.ToString();
             timeInputField.image.color = Color.green;
         }
         else
@@ -58,7 +58,7 @@ public class InputManager : MonoBehaviour
         float result;
         if (float.TryParse(speedInputField.text, out result))
         {
-            GeneManager.speed = result;
+            GeneManager.Speed = result;
             speedInputField.image.color = Color.green;
         }
         else
@@ -73,7 +73,7 @@ public class InputManager : MonoBehaviour
         float result;
         if (float.TryParse(mutationInputField.text, out result) && result <= 100)
         {
-            GeneManager.mutationRate = result;
+            GeneManager.MutationRate = result;
             mutationInputField.image.color = Color.green;
         }
         else
@@ -86,11 +86,11 @@ public class InputManager : MonoBehaviour
     public void UpdateInformation()
     {
         information.text = "";
-        information.text += "Passed Genes : " + GeneManager.passScale + "\n";
-        information.text += "Test Genes : " + (GeneManager.passScale * (GeneManager.passScale - 1)) / 2 + "\n";
-        information.text += "Gene Size : " + GeneManager.size.ToString() + "\n";
-        information.text += "Time Scale : " + GeneManager.time.ToString() + "\n";
-        information.text += "Gene Speed : " + GeneManager.speed + "\n";
-        information.text += "Mutation Rate : " + GeneManager.mutationRate + "\n";
+        information.text += "Passed Genes : " + GeneManager.PassScale + "\n";
+        information.text += "Test Genes : " + (GeneManager.PassScale * (GeneManager.PassScale - 1)) / 2 + "\n";
+        information.text += "Gene Size : " + GeneManager.Size.ToString() + "\n";
+        information.text += "Time Scale : " + GeneManager.Time.ToString() + "\n";
+        information.text += "Gene Speed : " + GeneManager.Speed + "\n";
+        information.text += "Mutation Rate : " + GeneManager.MutationRate + "\n";
     }
 }

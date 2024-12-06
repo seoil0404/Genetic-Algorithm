@@ -14,7 +14,7 @@ public class DrawManager : MonoBehaviour
     public void FinishDraw()
     {
         isFinish = true;
-        GeneManager.controller.StartEvolve();
+        GeneManager.Controller.StartEvolve();
         Destroy(startButton);
     }
 

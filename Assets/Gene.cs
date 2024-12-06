@@ -19,28 +19,22 @@ public class Gene : MonoBehaviour
 
     public void Initialize()
     {
-        transform.position = GeneManager.controller.startPoint.transform.position;
+        transform.position = GeneManager.Controller.startPoint.transform.position;
         
         pastPosition = gameObject.transform.position;
         currentPosition = gameObject.transform.position;
 
-        _endPosition = GeneManager.controller.endPoint.transform.position;
+        _endPosition = GeneManager.Controller.endPoint.transform.position;
         
         _rigidbody.linearVelocity = Vector2.zero;
 
         gameObject.SetActive(true);
     }
-
     private void Awake()
     {
         _rigidbody = gameObject.GetComponent<Rigidbody2D>();
-
-        _endPosition = GeneManager.controller.endPoint.transform.position;
-
-        pastPosition = gameObject.transform.position;
-        currentPosition = gameObject.transform.position;
+        Initialize();
     }
-
     public Chromosome chromosome
     {
         set
@@ -61,7 +55,6 @@ public class Gene : MonoBehaviour
             _endPosition = value; 
         }
     }
-
     private void UpdateBehavior()
     {
         if (_chromosome == null) Debug.LogError("The Chromosome didn't allocated");
@@ -69,23 +62,22 @@ public class Gene : MonoBehaviour
         switch (_chromosome.direction)
         {
             case Direction.Left:
-                _rigidbody.linearVelocity = Vector2.left * GeneManager.speed;
+                _rigidbody.linearVelocity = Vector2.left * GeneManager.Speed;
                 break;
             case Direction.Right:
-                _rigidbody.linearVelocity = Vector2.right * GeneManager.speed;
+                _rigidbody.linearVelocity = Vector2.right * GeneManager.Speed;
                 break;
             case Direction.Down:
-                _rigidbody.linearVelocity = Vector2.down * GeneManager.speed;
+                _rigidbody.linearVelocity = Vector2.down * GeneManager.Speed;
                 break;
             case Direction.Up:
-                _rigidbody.linearVelocity = Vector2.up * GeneManager.speed;
+                _rigidbody.linearVelocity = Vector2.up * GeneManager.Speed;
                 break;
             case Direction.Stop:
                 _rigidbody.linearVelocity = Vector2.zero;
                 break;
         }
     }
-
     private void UpdateFitness()
     {
         currentPosition = gameObject.transform.position;
@@ -97,12 +89,10 @@ public class Gene : MonoBehaviour
         
         pastPosition = currentPosition;
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         enterStack++;
     }
-
     private void OnTriggerExit2D(Collider2D collision)
     {
         enterStack--;
@@ -116,12 +106,11 @@ public class Gene : MonoBehaviour
             else enterStack++;
         }
     }
-
     private void Out()
     {
-        for(int index = 0; index < GeneManager.size; index++)
+        for(int index = 0; index < GeneManager.Size; index++)
         {
-            population.chromosomes[index].fitness -= GeneManager.speed * 0.1f;
+            population.chromosomes[index].fitness -= GeneManager.Speed * 0.1f;
         }
         _rigidbody.linearVelocity = Vector2.zero;
         gameObject.SetActive(false);
